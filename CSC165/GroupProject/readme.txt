@@ -8,7 +8,9 @@ in Blender. I still worked hard to understand the concepts of the
 engine, that I could apply to a more standard modern engine. 
 
 I did work on some small bits of code, such as the tesselation feature
-and one or two other smaller features. 
+and one or two other smaller features. I opted not to include the
+code for this, but instead the readme file that my team mate put 
+together.
 
 Ineffeciencies: The bug made the game crash on my system (and 
 apparently on one of the teacher's computers as well, and at 
