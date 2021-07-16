@@ -1,0 +1,120 @@
+CREATE TABLE CUSTOMER
+(cust_id     INT     NOT NULL,
+first     VARCHAR(15)     NOT NULL,
+last     VARCHAR(15)     NOT NULL,
+street     VARCHAR(20),
+city     VARCHAR(15), 
+state     CHAR(2),
+zip     INT,
+PRIMARY KEY (cust_id));
+
+CREATE TABLE REWARDS
+(r_id     INT     NOT NULL,
+cust_id     INT,
+points     INT, 
+PRIMARY KEY (r_id),
+FOREIGN KEY (cust_id) REFERENCES CUSTOMER (cust_id)
+    ON DELETE SET NULL
+    ON UPDATE CASCADE);
+
+CREATE TABLE CUSTOMER_PHONE
+(cust_id     INT     NOT NULL,
+phone     BIGINT     NOT NULL,
+PRIMARY KEY (cust_id, phone),
+FOREIGN KEY (cust_id) REFERENCES CUSTOMER (cust_id));
+
+CREATE TABLE CONTRACTOR
+(bus_name     VARCHAR(30)     NOT NULL,
+discount_percent     DEC(4,2),
+PRIMARY KEY (bus_name));
+
+CREATE TABLE CONTRACTOR_PHONE
+(bus_name     VARCHAR(30)     NOT NULL,
+phone     BIGINT     NOT NULL,
+PRIMARY KEY (bus_name, phone),
+FOREIGN KEY (bus_name) REFERENCES CONTRACTOR (bus_name));
+
+CREATE TABLE HIRE
+(cust_id     INT     NOT NULL,
+bus_name     VARCHAR(30)     NOT NULL,
+hours     DEC(4,2),
+PRIMARY KEY (cust_id, bus_name),
+FOREIGN KEY (cust_id) REFERENCES CUSTOMER(cust_id),
+FOREIGN KEY (bus_name) REFERENCES CONTRACTOR (bus_name));
+
+CREATE TABLE ROOM
+(name     VARCHAR(30)     NOT NULL,
+cust_id     INT     NOT NULL,
+PRIMARY KEY (name, cust_id),
+FOREIGN KEY (cust_id) REFERENCES CUSTOMER (cust_id));
+
+CREATE TABLE PAINT_COLOR
+(mfg_id     INT     NOT NULL,
+color_id     INT     NOT NULL,
+name     VARCHAR(30)     NOT NULL,
+PRIMARY KEY (mfg_id, color_id));
+
+CREATE TABLE PAINTED
+(rm_name     VARCHAR(30)     NOT NULL,
+cust_id     INT     NOT NULL,
+mfg_id     INT     NOT NULL,
+color_id     INT     NOT NULL,
+PRIMARY KEY (rm_name, cust_id, mfg_id, color_id),
+FOREIGN KEY (cust_id) REFERENCES CUSTOMER (cust_id),
+FOREIGN KEY (mfg_id, color_id) REFERENCES PAINT_COLOR (mfg_id, color_id));
+
+INSERT INTO CUSTOMER(cust_id, first, last, street, city, state, zip)
+VALUES (243, 'Jasper', 'Dappers', '1520 Keller', 'Palledium', 'CA', 95813);
+
+INSERT INTO REWARDS(r_id, cust_id, points)
+VALUES (22, 243, 459);
+
+INSERT INTO CUSTOMER_PHONE (cust_id, phone)
+VALUES (243, 9162243214);
+
+INSERT INTO CONTRACTOR(bus_name, discount_percent)
+VALUES ('Painters Anonymous', .12);
+
+INSERT INTO CONTRACTOR_PHONE (bus_name, phone)
+VALUES ('Painters Anonymous', 9173435625);
+
+INSERT INTO HIRE (cust_id, bus_name, hours)
+VALUES (243, 'Painters Anonymous', 6.3);
+
+INSERT INTO ROOM(name, cust_id)
+VALUES ('White Album', 243);
+
+INSERT INTO PAINT_COLOR(mfg_id, color_id, name)
+VALUES (33, 92, 'Chocolate');
+
+INSERT INTO PAINT_COLOR(mfg_id, color_id, name)
+VALUES (53, 2, 'Super Green');
+
+INSERT INTO PAINT_COLOR(mfg_id, color_id, name)
+VALUES (99, 8, 'Final Frontier Silver');
+
+INSERT INTO PAINTED(rm_name, cust_id, mfg_id, color_id)
+VALUES ('White Album', 243, 33, 92);
+
+INSERT INTO PAINTED(rm_name, cust_id, mfg_id, color_id)
+VALUES ('White Album', 243, 53, 2);
+
+INSERT INTO PAINTED(rm_name, cust_id, mfg_id, color_id)
+VALUES ('White Album', 243, 99, 8);
+
+DELETE FROM PAINTED
+WHERE mfg_id > 50;
+
+UPDATE HIRE
+SET hours = 10
+WHERE cust_id = 243;
+
+DROP TABLE PAINTED;
+DROP TABLE PAINT_COLOR;
+DROP TABLE ROOM;
+DROP TABLE HIRE;
+DROP TABLE CONTRACTOR_PHONE;
+DROP TABLE CONTRACTOR;
+DROP TABLE CUSTOMER_PHONE;
+DROP TABLE REWARDS;
+DROP TABLE CUSTOMER;
