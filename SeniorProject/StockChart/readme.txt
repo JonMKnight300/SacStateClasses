@@ -1,1 +1,3 @@
+Lessons Learned: 
 
+Ineffeciencies: 
